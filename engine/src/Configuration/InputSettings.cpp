@@ -6,7 +6,7 @@
 // http://www.gnu.org/licenses/lgpl.html
 // ----------------------------------------------------------------------------
 
-#include <Input/InputSettings.hpp>
+#include <Configuration/InputSettings.hpp>
 
 #include <Utils/Logger.hpp>
 

@@ -74,4 +74,7 @@ add_test(NAME MusicFade COMMAND test_framework MusicFade)
 add_test(NAME Music COMMAND test_framework Music)
 add_test(NAME Sound COMMAND test_framework Sound)
 
+# configuration
+add_test(NAME InputSettings COMMAND test_framework InputSettings)
+
 set(memorycheck_command:FILEPATH=/usr/bin/valgrind)

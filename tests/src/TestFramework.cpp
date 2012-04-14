@@ -43,6 +43,7 @@
 #include "BillboardTest/BillboardTest.hpp"
 #include "GuiStateTest/GuiStateTest.hpp"
 #include "TriggerAreaComponentTest/TriggerAreaComponentTest.hpp"
+#include "InputSettingsTest/InputSettings.hpp"
 
 #include <iostream>
 
@@ -98,6 +99,7 @@ int main(int argc, char** argv) {
     addTest(new BillboardTest::BillboardTest);
     addTest(new GuiStateTest::GuiStateTest);
     addTest(new TriggerAreaComponentTest::TriggerAreaComponentTest);
+    addTest(new InputSettingsTest::InputSettingsTest);
 
     if(argc < 2) {
         std::cout << "TestFramework usage: " << std::endl;
