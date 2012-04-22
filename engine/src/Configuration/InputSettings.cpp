@@ -9,12 +9,19 @@
 #include <Configuration/InputSettings.hpp>
 
 #include <Utils/Logger.hpp>
+#include <Utils/Utils.hpp>
 
 namespace dt {
+    const QString InputSettings::NAME("Input");
+
     InputSettings::InputSettings() :
           mMappings(),
           mIsMouseYInversed(false),
           mMouseSensitivity(1.0f) {}
+
+    QString InputSettings::getName() const {
+        return NAME;
+    }
 
     bool InputSettings::setKey(QString function, InputManager::InputCode key) {
         auto orig_pair = this->getByFunction(function);
@@ -115,5 +122,38 @@ namespace dt {
         auto iter = getByKey(key);
 
         return iter != mMappings.end();
+    }
+
+    void InputSettings::_onToXML(QDomDocument& doc, QDomElement& parent) const {
+        for(auto iter = mMappings.begin() ; iter != mMappings.end() ; ++iter) {
+            QDomElement element = doc.createElement(iter->second);
+
+            element.setNodeValue(Utils::toString(iter->first));
+            parent.appendChild(element);
+        }
+    }
+
+    void InputSettings::_onFromXML(const QDomDocument& doc, const QDomElement& parent) {
+        // Load the data only when parent is not null.
+        if(!parent.isNull()) {
+            for(auto iter = parent.firstChildElement() ; !iter.isNull() ; iter = iter.nextSibling()) {
+                QString name = iter.nodeName();
+                InputManager::InputCode value;
+
+                // Check if the value of this child node exists.
+                if(iter.nodeValue().isNull()) {
+                    value = InputManager::NONE;
+                }
+                else {
+                    value = (InputManager::InputCode)iter.nodeValue().toInt();
+                }
+
+                // Try to set the mapping first.
+                if(!setKey(name, value)) {
+                    // Failed, add it then.
+                    addFunction(name, value);
+                }
+            }
+        }
     }
 }

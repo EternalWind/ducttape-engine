@@ -11,6 +11,7 @@
 
 #include <Config.hpp>
 
+#include <Configuration/Settings.hpp>
 #include <Input/InputManager.hpp>
 
 #include <QString>
@@ -23,15 +24,22 @@ namespace dt {
     /**
       * A class to hold the input settings.
       */
-    class DUCTTAPE_API InputSettings {
+    class DUCTTAPE_API InputSettings : public Settings {
     public:
 
         typedef std::list<std::pair<InputManager::InputCode, QString>>::iterator InputMapping;
 
         /**
-          * Constructor.
+          * The constructor.
           */
         InputSettings();
+
+        /**
+          * Gets the name of this settings.
+          * @returns The name of this settings. It's "Input" for the InputSettings.
+          * @see Settings
+          */
+        QString getName() const;
 
         /**
           * Adds a mapping of a function and a key.
@@ -112,6 +120,26 @@ namespace dt {
           * @param sensitivity The mouse sensitivity. If the value of this parameter should be within 0 ~ 1. If the given value is out of this range, it will be clipped.
           */
         void setMouseSensitivity(float sensitivity);
+
+    protected:
+        /**
+          * Called when this settings is being saved to an XML document.
+          * @param doc The XML document object.
+          * @param parent The parent XML element with the name of this settings. All your sub-nodes should be attached to this node.
+          * @see Settings
+          */
+        void _onToXML(QDomDocument& doc, QDomElement& parent) const;
+
+        /**
+          * Called when this settings is being loaded from an XML document.
+          * @param doc The XML document object.
+          * @param parent The parent XML element with the name of this settings. If this node doesn't exist, the value of this parameter will be null. You should call isNull before your other calls.
+          * @see Settings
+          */
+        void _onFromXML(const QDomDocument& doc, const QDomElement& parent);
+
+    public:
+        static const QString NAME;                                                   //!< The name of the InputSettings.
 
     private:
         std::list<std::pair<InputManager::InputCode, QString>> mMappings;            //!< The container for the mapping of keys and functions.
