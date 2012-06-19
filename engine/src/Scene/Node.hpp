@@ -355,18 +355,18 @@ protected:
     void _updateAllChildren(double time_diff);
 
     std::map<QString, std::shared_ptr<Component> > mComponents;   //!< The list of Components.
-    QString mName;              //!< The Node name.
+    QString mName;                                                //!< The Node name.
+    bool mIsUpdatingAfterChange;                                  //!< Whether the node is just in the process of updating all components after a change occurred. This is to prevent infinite stack loops.
 
 private:
-    std::map<QString, NodeSP> mChildren;  //!< List of child nodes.
-    Ogre::Vector3 mPosition;                    //!< The Node position.
-    Ogre::Vector3 mScale;                       //!< The Node scale.
-    Ogre::Quaternion mRotation;                 //!< The Node rotation.
-    Node* mParent;                        //!< A pointer to the parent Node.
-    bool mIsUpdatingAfterChange;          //!< Whether the node is just in the process of updating all components after a change occurred. This is to prevent infinite stack loops.
-    QUuid mId;                            //!< The node's uuid.
-    bool mDeathMark;                      //!< Whether the node is marked to be killed. If it's true, the node will be killed when it updates.
-    bool mIsEnabled;                      //!< Whether the node is enabled or not.
+    std::map<QString, NodeSP> mChildren;                          //!< List of child nodes.
+    Ogre::Vector3 mPosition;                                      //!< The Node position.
+    Ogre::Vector3 mScale;                                         //!< The Node scale.
+    Ogre::Quaternion mRotation;                                   //!< The Node rotation.
+    Node* mParent;                                                //!< A pointer to the parent Node.
+    QUuid mId;                                                    //!< The node's uuid.
+    bool mDeathMark;                                              //!< Whether the node is marked to be killed. If it's true, the node will be killed when it updates.
+    bool mIsEnabled;                                              //!< Whether the node is enabled or not.
 };
 
 } // namespace dt

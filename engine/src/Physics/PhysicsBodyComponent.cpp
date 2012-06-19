@@ -68,6 +68,7 @@ void PhysicsBodyComponent::onInitialize() {
     else if(mCollisionShapeType == TRIMESH)
         mCollisionShape = converter.createTrimesh();
 
+    mCollisionShape->setLocalScaling(BtOgre::Convert::toBullet(this->getNode()->getScale()));
     btVector3 inertia(0, 0, 0);
     //Only the rigidbody's mass doesn't equal to zero is dynamic or some odd phenomenon may appear.
     if(mMass != 0.0f)

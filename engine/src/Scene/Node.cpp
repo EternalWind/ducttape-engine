@@ -18,11 +18,11 @@ namespace dt {
 
 Node::Node(const QString name)
     : mName(name),
+      mIsUpdatingAfterChange(false),
       mPosition(Ogre::Vector3::ZERO),
       mScale(Ogre::Vector3(1,1,1)),
       mRotation(Ogre::Quaternion::IDENTITY),
       mParent(nullptr),
-      mIsUpdatingAfterChange(false),
       mDeathMark(false),
       mIsEnabled(true) {
 
