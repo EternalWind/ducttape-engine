@@ -180,9 +180,10 @@ void GuiWidget::removeChild(const QString name) {
 }
 
 void GuiWidget::removeAllChildren() {
-    for(auto child = mChildren.begin(); child != mChildren.end(); child++) {
+    for(auto child = mChildren.begin(); child != mChildren.end();) {
         auto name = child->first;
-        child--;
+        ++child;
+
         removeChild(name);
     }
 }
