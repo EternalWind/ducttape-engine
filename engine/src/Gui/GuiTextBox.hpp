@@ -49,6 +49,12 @@ public:
       */
 	const MyGUI::Colour& getTextColour();
 
+	/** 
+	  *Get widget text font height 
+	  * @returns The fontheight.
+	  */
+	int getFontHeight();
+
 public slots:
     /**
       * Sets the caption of the widget.
@@ -62,9 +68,17 @@ public slots:
       */
 	void  setTextColour (const MyGUI::Colour &_value);
 
+	/** 
+	  *Set widget text font height 
+	  * @param _value The new fontheight.
+	  */
+	void setFontHeight(int _value);
+	
+
 signals:
     void captionChanged(QString caption);
 	void  textColourChanged(MyGUI::Colour _value);
+	void fontHeightChanged(int _value);
 };
 
 }

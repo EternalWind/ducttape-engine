@@ -39,4 +39,16 @@ const MyGUI::Colour& GuiTextBox::getTextColour() {
 	return dynamic_cast<MyGUI::TextBox*>(getMyGUIWidget())->getTextColour();
 }
 
+void GuiTextBox::setFontHeight(int _value) {
+	if(getFontHeight() != _value) {
+		dynamic_cast<MyGUI::TextBox*>(getMyGUIWidget())->setFontHeight(_value);
+        emit fontHeightChanged(_value);
+	}
 }
+
+int GuiTextBox::getFontHeight() {
+	return dynamic_cast<MyGUI::TextBox*>(getMyGUIWidget())->getFontHeight();
+}
+
+}
+
