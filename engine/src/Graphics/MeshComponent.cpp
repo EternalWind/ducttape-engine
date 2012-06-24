@@ -187,4 +187,12 @@ void MeshComponent::_destroyMesh() {
         scene_mgr->destroySceneNode(mSceneNode);
 }
 
+bool MeshComponent::isAnimationStopped() const {
+    if(mAnimationState != nullptr) {
+        return mAnimationState->hasEnded();
+    }
+
+    return false;
+}
+
 }

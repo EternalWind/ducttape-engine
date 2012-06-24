@@ -70,6 +70,12 @@ public:
     std::vector<QString> getAvailableAnimations();
 
     /**
+      * Returns if the current animation has stopped.
+      * @returns Whether the current animation has stopped.
+      */
+    bool isAnimationStopped() const;
+
+    /**
       * Sets the animation to use.
       * @param animation_state The identifier (name) of the Ogre::AnimationState to use.
       * @see Ogre::AnimationState

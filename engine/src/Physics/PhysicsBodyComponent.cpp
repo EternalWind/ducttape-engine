@@ -52,6 +52,7 @@ void PhysicsBodyComponent::onInitialize() {
     if(mCollisionShapeType == BOX) {
         Ogre::Vector3 size = mesh_component->getOgreEntity()->getBoundingBox().getSize();
         size /= 2.0;
+
         mCollisionShape = new btBoxShape(BtOgre::Convert::toBullet(size));
         //mCollisionShape = converter.createBox();
     }
@@ -82,6 +83,8 @@ void PhysicsBodyComponent::onInitialize() {
     //Or you will find your player character keeps falling down no matter there's a ground.
     //Its real mass will be set in OnEnable().
     mBody = new btRigidBody(5.0, state, mCollisionShape, inertia);
+
+    std::cout << mCollisionShape->getLocalScaling().getY() << std::endl;
 
     // Store pointer to this PhysicsBodyComponent for later retrieval (for
     // collisions, for instance)
@@ -114,6 +117,8 @@ void PhysicsBodyComponent::onEnable() {
         btTransform(BtOgre::Convert::toBullet(getNode()->getRotation(Node::SCENE)),
         BtOgre::Convert::toBullet(getNode()->getPosition(Node::SCENE))));
     mBody->setMotionState(state);
+
+    mCollisionShape->setLocalScaling(BtOgre::Convert::toBullet(this->getNode()->getScale()));
 
     setMass(mMass);
 
