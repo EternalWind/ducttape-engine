@@ -95,28 +95,34 @@ void MeshComponent::setAnimation(const QString animation_state) {
 }
 
 void MeshComponent::playAnimation() {
-    if(mAnimationState != nullptr && mAnimationState->getEnabled() != true) {
-        mAnimationState->setEnabled(true);
-        emit animationPlayed();
+    if(mAnimationState != nullptr) {
+        if(mAnimationState->getEnabled() != true) {
+            mAnimationState->setEnabled(true);
+            emit animationPlayed();
+        }
     } else {
         Logger::get().error("Cannot play animation of component " + getName() + ": No animation set.");
     }
 }
 
 void MeshComponent::stopAnimation() {
-    if(mAnimationState != nullptr && mAnimationState->getEnabled() != false) {
-        mAnimationState->setEnabled(false);
-        mAnimationState->setTimePosition(0);
-        emit animationStopped();
+    if(mAnimationState != nullptr) {
+        if(mAnimationState->getEnabled() != false) {
+            mAnimationState->setEnabled(false);
+            mAnimationState->setTimePosition(0);
+            emit animationStopped();
+        }
     } else {
         Logger::get().error("Cannot stop animation of component " + getName() + ": No animation set.");
     }
 }
 
 void MeshComponent::pauseAnimation() {
-    if(mAnimationState != nullptr && mAnimationState->getEnabled() != false) {
-        mAnimationState->setEnabled(false);
-        emit animationPaused();
+    if(mAnimationState != nullptr) {
+        if(mAnimationState->getEnabled() != false) {
+            mAnimationState->setEnabled(false);
+            emit animationPaused();
+        }
     } else {
         Logger::get().error("Cannot pause animation of component " + getName() + ": No animation set.");
     }
