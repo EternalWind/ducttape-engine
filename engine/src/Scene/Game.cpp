@@ -43,7 +43,7 @@ void Game::run(State* start_state, int argc, char** argv) {
     // read http://gafferongames.com/game-physics/fix-your-timestep for more
     // info about this timestep stuff, especially the accumulator and the
     // "spiral of death"
-    double simulation_frame_time = 0.001;
+    double simulation_frame_time = 0.02;
     double accumulator = 0.0;
     sf::Clock anti_spiral_clock;
 
