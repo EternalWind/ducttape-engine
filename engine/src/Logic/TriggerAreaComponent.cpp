@@ -9,7 +9,8 @@ namespace dt
 TriggerAreaComponent::TriggerAreaComponent(btCollisionShape* areaShape,
                                            const QString name) : 
     Component(name),
-    mArea(areaShape) { }
+    mArea(areaShape),
+    mObject(nullptr) { }
 
 void TriggerAreaComponent::onUpdate(double time_diff) {
     if(!isEnabled()) {
@@ -25,8 +26,19 @@ void TriggerAreaComponent::onUpdate(double time_diff) {
 
     for(int32_t i = 0; i < mObject->getNumOverlappingObjects(); ++i)
     {
-        Component* collidingComponent = static_cast<Component*>(mObject->getOverlappingObject(i)->getUserPointer());
-        emit triggered(this, collidingComponent);
+        void* user_pointer = mObject->getOverlappingObject(i)->getUserPointer();
+
+        if (user_pointer != nullptr) {
+            Component* collidingComponent = static_cast<Component*>(user_pointer);
+
+            if (collidingComponent == nullptr)
+                continue;
+
+            if (collidingComponent->getNode() == nullptr)
+                continue;
+
+            emit triggered(this, collidingComponent);
+        }
     }
 }
 
@@ -36,21 +48,32 @@ void TriggerAreaComponent::onInitialize() {
     transform.setOrigin(BtOgre::Convert::toBullet(getNode()->getPosition(Node::SCENE)));
     transform.setRotation(BtOgre::Convert::toBullet(getNode()->getRotation(Node::SCENE)));
     
-    mObject.reset(new btGhostObject());
-    mObject->setCollisionShape(mArea.get());
+    mObject = new btGhostObject();
+    mObject->setCollisionShape(mArea);
     mObject->setWorldTransform(transform);
     mObject->setCollisionFlags(mObject->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
-    getNode()->getScene()->getPhysicsWorld()->getBulletWorld()->addCollisionObject(mObject.get());
+    mObject->setUserPointer(nullptr);
+    getNode()->getScene()->getPhysicsWorld()->getBulletWorld()->addCollisionObject(mObject);
 }
 
 void TriggerAreaComponent::setAreaShape(btCollisionShape* areaShape)
 {
-    mArea.reset(areaShape);
-    mObject->setCollisionShape(mArea.get());
+    mArea = areaShape;
+    mObject->setCollisionShape(mArea);
 }
 
-void TriggerAreaComponent::onDeinitialize() {}
-void TriggerAreaComponent::onEnable(){}
-void TriggerAreaComponent::onDisable(){}
+void TriggerAreaComponent::onDeinitialize() {
+    //elete mObject;
+    //delete mArea;
+}
+void TriggerAreaComponent::onEnable(){
+    getNode()->getScene()->getPhysicsWorld()->getBulletWorld()->addCollisionObject(mObject);
+}
+void TriggerAreaComponent::onDisable(){
+    getNode()->getScene()->getPhysicsWorld()->getBulletWorld()->getCollisionWorld()->removeCollisionObject(mObject);
+    getNode()->getScene()->getPhysicsWorld()->getBulletWorld()->removeCollisionObject(mObject);
+    this->setAreaShape(new btBoxShape(btVector3(0, 0, 0)));
+    getNode()->getScene()->getPhysicsWorld()->getBulletWorld()->addCollisionObject(mObject);
+}
 
 }

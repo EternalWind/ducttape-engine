@@ -48,8 +48,8 @@ signals:
     void triggered(dt::TriggerAreaComponent* trigger_area, dt::Component* component);
 
 private:
-    std::unique_ptr<btCollisionShape> mArea; /// area entering which sends the Triggered signal
-    std::unique_ptr<btGhostObject> mObject;  /// object used to check collission
+    btCollisionShape* mArea; /// area entering which sends the Triggered signal
+    btGhostObject* mObject;  /// object used to check collission
 
 };
 
