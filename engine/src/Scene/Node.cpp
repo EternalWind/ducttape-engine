@@ -322,16 +322,17 @@ void Node::_updateAllComponents(double time_diff) {
 void Node::_updateAllChildren(double time_diff) {
     mIsUpdatingAfterChange = (time_diff == 0);
 
-    for(auto iter = mChildren.begin(); iter != mChildren.end(); ++iter) {
+    for(auto iter = mChildren.begin(); iter != mChildren.end();) {
         if(iter->second->mDeathMark) {
             //Kill it if the death mark is set.
             Node* node = iter->second.get();
-            iter--;
+            ++iter;
             QString name = node->getName();
             removeChildNode(name);
         }
         else {
             iter->second->onUpdate(time_diff);
+            ++iter;
         }
     }
 

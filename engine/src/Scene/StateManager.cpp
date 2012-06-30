@@ -53,6 +53,8 @@ bool StateManager::shiftStates() {
     // add new state
     if(mHasNewState) {
         if(getCurrentState() != nullptr) {
+            QObject::disconnect(this,              SIGNAL(beginFrame(double)),
+                                getCurrentState(), SLOT(updateFrame(double)));
             getCurrentState()->deinitialize();
         }
         mStates.push_back(mNewState);
