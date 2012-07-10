@@ -134,4 +134,16 @@ TerrainManager* Root::getTerrainManager() {
     return mTerrainManager;
 }
 
+bool Root::hasPaused() const {
+    return mHasPaused;
+}
+
+void Root::pause() {
+    mHasPaused = true;
+}
+
+void Root::resume() {
+    mHasPaused = false;
+}
+
 }

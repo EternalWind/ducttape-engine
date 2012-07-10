@@ -94,6 +94,22 @@ public:
     double getTimeSinceInitialize() const;
 
     /**
+      * Gets whether the game has been paused or not.
+      * @returns Whether the game has been paused or not.
+      */
+    bool hasPaused() const;
+
+    /**
+      * Pause the game.
+      */
+    void pause();
+
+    /**
+      * Resume the game.
+      */
+    void resume();
+
+    /**
       * Returns the LogManager.
       * @returns the LogManager
       */
@@ -165,6 +181,8 @@ private:
     PhysicsManager* mPhysicsManager;    //!< Pointer to the PhysicsManager.
     TerrainManager* mTerrainManager;    //!< Pointer to the TerrainManager.
     ScriptManager* mScriptManager;      //!< Pointer to the ScriptManager.
+
+    bool mHasPaused;                    //!< Specify whether the game has been paused or not.
 };
 
 }

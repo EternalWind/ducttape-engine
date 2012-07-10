@@ -60,27 +60,29 @@ void Game::run(State* start_state, int argc, char** argv) {
         // INPUT
         InputManager::get()->capture();
 
-        accumulator += frame_time;
-        while(accumulator >= simulation_frame_time) {
-            anti_spiral_clock.restart();
-            // SIMULATION
-            emit beginFrame(simulation_frame_time);
+        if(!root.hasPaused()) {
+            accumulator += frame_time;
+            while(accumulator >= simulation_frame_time) {
+                anti_spiral_clock.restart();
+                // SIMULATION
+                emit beginFrame(simulation_frame_time);
 
 
-            // NETWORKING
-            root.getNetworkManager()->sendQueuedEvents();
+                // NETWORKING
+                root.getNetworkManager()->sendQueuedEvents();
 
-            double real_simulation_time = anti_spiral_clock.getElapsedTime().asSeconds();
-            if(real_simulation_time > simulation_frame_time) {
-                // this is bad! the simulation did not render fast enough
-                // to have some time left for rendering etc.
+                double real_simulation_time = anti_spiral_clock.getElapsedTime().asSeconds();
+                if(real_simulation_time > simulation_frame_time) {
+                    // this is bad! the simulation did not render fast enough
+                    // to have some time left for rendering etc.
 
-                // skip a frame to catch up
+                    // skip a frame to catch up
+                    accumulator -= simulation_frame_time;
+
+                    accumulator -= real_simulation_time;
+                }
                 accumulator -= simulation_frame_time;
-
-                accumulator -= real_simulation_time;
             }
-            accumulator -= simulation_frame_time;
         }
 
         // DISPLAYING
